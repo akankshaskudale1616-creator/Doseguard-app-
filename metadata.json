@@ -1,0 +1,6 @@
+{
+  "name": "DoseGuard - Digital Pharmacovigilance System",
+  "description": "Patient-to-pharmacist digital pharmacovigilance platform converting real-world medicine use and symptoms into structured, prioritized suspected ADR cases with temporal causality triage and PvPI compliance.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
