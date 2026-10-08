@@ -640,6 +640,9 @@ export const VisualAdrMapping: React.FC<VisualAdrMappingProps> = ({
                     <img
                       src={selectedEvent.photoEvidenceUrl}
                       alt="ADR Evidence"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80';
+                      }}
                       className="w-12 h-12 rounded-xl object-cover border border-indigo-300 shadow-xs cursor-pointer"
                       onClick={() => setShowPhotoModal(selectedEvent.photoEvidenceUrl || null)}
                     />

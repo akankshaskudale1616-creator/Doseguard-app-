@@ -12,6 +12,7 @@ import {
   VisualAdrEvent,
   MedicationHistoryRecord,
 } from '../types/pv';
+import { medicineBlisterPackImg } from '../assets/images';
 
 export const INITIAL_E_PRESCRIPTIONS: ElectronicPrescription[] = [
   {
@@ -656,7 +657,7 @@ export const INITIAL_VISUAL_ADR_EVENTS: VisualAdrEvent[] = [
     dechallengeStatus: 'In Progress / Suspected Withheld',
     rechallengeStatus: 'Contraindicated (Not re-challenged)',
     outcome: 'Recovering',
-    photoEvidenceUrl: '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+    photoEvidenceUrl: medicineBlisterPackImg,
     clinicalAction: 'Augmentin withheld immediately. Levocetirizine 5mg administered. Emergency airway watch maintained.',
     reportedBy: 'Patient & Community Pharmacist',
     status: 'escalated',
@@ -690,7 +691,7 @@ export const INITIAL_VISUAL_ADR_EVENTS: VisualAdrEvent[] = [
     dechallengeStatus: 'In Progress / Suspected Withheld',
     rechallengeStatus: 'Contraindicated (Not re-challenged)',
     outcome: 'Recovering',
-    photoEvidenceUrl: '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+    photoEvidenceUrl: medicineBlisterPackImg,
     clinicalAction: 'Topical calamine lotion + oral H1 antagonist. Evaluated for mucosal involvement (ruled out SJS).',
     reportedBy: 'Caregiver (Rohan Kulkarni)',
     status: 'escalated',

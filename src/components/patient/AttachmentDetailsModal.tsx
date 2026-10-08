@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Medicine, MedicationAttachment } from '../../types/pv';
+import { medicineBlisterPackImg } from '../../assets/images';
 import {
   X,
   Camera,
@@ -38,7 +39,7 @@ export const AttachmentDetailsModal: React.FC<AttachmentDetailsModalProps> = ({
     fileName: `${medicine.brandName.toLowerCase().replace(/[^a-z0-9]/g, '_')}_label.jpg`,
     fileSize: '384 KB',
     mimeType: 'image/jpeg',
-    dataUrl: medicine.labelPhoto || '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+    dataUrl: medicine.labelPhoto || medicineBlisterPackImg,
     capturedAt: new Date().toLocaleString(),
     source: 'camera',
     batchNumber: medicine.batchNumber || 'AX26-904',
@@ -46,7 +47,7 @@ export const AttachmentDetailsModal: React.FC<AttachmentDetailsModalProps> = ({
     notes: 'Medication label photo captured via device camera for pharmacist verification.',
   };
 
-  const imageUrl = currentAttachment.dataUrl || medicine.labelPhoto || '/src/assets/images/medicine_blister_pack_1791221295842.jpg';
+  const imageUrl = currentAttachment.dataUrl || medicine.labelPhoto || medicineBlisterPackImg;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">

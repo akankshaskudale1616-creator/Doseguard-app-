@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Medicine, SymptomReport } from '../../types/pv';
+import { seniorPatientImg, PATIENT_FALLBACK_AVATAR } from '../../assets/images';
 import {
   HeartHandshake,
   User,
@@ -47,7 +48,7 @@ export const CaregiverDashboard: React.FC<CaregiverDashboardProps> = ({
       id: 'ramesh',
       name: 'Ramesh V. Kulkarni',
       relationship: 'Father (Elderly, 68 yrs)',
-      avatar: '/src/assets/images/senior_patient_1791221318901.jpg',
+      avatar: seniorPatientImg,
       conditions: 'Hypertension, Type-2 Diabetes, LRTI',
       medCount: 6,
       status: 'Active ADR Under Review (Augmentin 625)',
@@ -195,6 +196,9 @@ export const CaregiverDashboard: React.FC<CaregiverDashboardProps> = ({
                 src={dep.avatar}
                 alt={dep.name}
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = PATIENT_FALLBACK_AVATAR;
+                }}
                 className="w-11 h-11 rounded-full object-cover border-2 border-orange-200 shrink-0"
               />
               <div className="min-w-0 text-xs">

@@ -43,6 +43,7 @@ import { CompoundingCalculators } from './CompoundingCalculators';
 import { PatientConsultationLogs } from './PatientConsultationLogs';
 import { VisualAdrMapping } from '../adr/VisualAdrMapping';
 import { MedicationHistoryView } from '../history/MedicationHistoryView';
+import { clinicalPharmacistImg, PHARMACIST_FALLBACK_AVATAR } from '../../assets/images';
 
 interface PharmacistDashboardProps {
   cases?: SymptomReport[];
@@ -148,9 +149,12 @@ export const PharmacistDashboard: React.FC<PharmacistDashboardProps> = ({
       <div className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-4">
           <img
-            src="/src/assets/images/clinical_pharmacist_1791221308531.jpg"
+            src={clinicalPharmacistImg}
             alt="Clinical Pharmacist"
             referrerPolicy="no-referrer"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = PHARMACIST_FALLBACK_AVATAR;
+            }}
             className="w-14 h-14 rounded-2xl object-cover border-2 border-orange-400/40 shrink-0 shadow-xs"
           />
           <div>

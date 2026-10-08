@@ -87,6 +87,9 @@ export const TargetUsersTableModal: React.FC<TargetUsersTableModalProps> = ({
               src={activeUserSpec.avatar}
               alt={activeUserSpec.userName}
               referrerPolicy="no-referrer"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80';
+              }}
               className="w-8 h-8 rounded-full object-cover border border-orange-300 shadow-xs"
             />
             <div>
@@ -187,6 +190,9 @@ export const TargetUsersTableModal: React.FC<TargetUsersTableModalProps> = ({
                               src={user.avatar}
                               alt={user.name}
                               referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80';
+                              }}
                               className="w-8 h-8 rounded-xl object-cover border border-slate-200 shrink-0 mt-0.5"
                             />
                             <div>
@@ -291,6 +297,9 @@ export const TargetUsersTableModal: React.FC<TargetUsersTableModalProps> = ({
                               src={u.avatar}
                               alt={u.name}
                               referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80';
+                              }}
                               className="w-6 h-6 rounded-full object-cover border border-slate-200"
                             />
                             <span>{u.name}</span>

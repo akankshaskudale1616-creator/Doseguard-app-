@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Camera, Sparkles, Image as ImageIcon, AlertCircle, Check, Eye } from 'lucide-react';
+import { prescriptionSampleImg } from '../../assets/images';
 
 export const DermatologyComparator: React.FC = () => {
   const [selectedReaction, setSelectedReaction] = useState('maculopapular_drug_eruption');
-  const [generatedImage, setGeneratedImage] = useState<string>('/src/assets/images/prescription_sample_1791221283671.jpg');
+  const [generatedImage, setGeneratedImage] = useState<string>(prescriptionSampleImg);
   const [isLoading, setIsLoading] = useState(false);
 
   const REACTIONS = [

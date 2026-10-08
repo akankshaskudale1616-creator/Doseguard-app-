@@ -83,9 +83,20 @@ export const Header: React.FC<HeaderProps> = ({
               <Sparkles className="w-3.5 h-3.5 text-orange-600" />
               <span>Logged In Role:</span>
             </span>
-            <span className="font-bold text-slate-900 shrink-0">
-              {currentProfile.userName}
-            </span>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <img
+                src={currentProfile.avatar}
+                alt={currentProfile.userName}
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = 'none';
+                }}
+                className="w-4 h-4 rounded-full object-cover border border-orange-300"
+              />
+              <span className="font-bold text-slate-900">
+                {currentProfile.userName}
+              </span>
+            </div>
             <span className="text-slate-400">·</span>
             <span className="text-orange-900 font-semibold bg-white border border-orange-200 px-2 py-0.5 rounded-full shrink-0">
               {currentProfile.name} ({currentProfile.accessCategory})
@@ -211,18 +222,19 @@ export const Header: React.FC<HeaderProps> = ({
                         }`}
                       >
                         <div
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${
-                            isSelected ? 'bg-white text-orange-600' : 'bg-orange-100 text-orange-800'
+                          className={`w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border ${
+                            isSelected ? 'border-white shadow-xs' : 'border-orange-200'
                           }`}
                         >
-                          {p.id === 'patient' && <User className="w-4 h-4" />}
-                          {p.id === 'caregiver' && <HeartHandshake className="w-4 h-4" />}
-                          {p.id === 'pharmacist' && <ShieldCheck className="w-4 h-4" />}
-                          {p.id === 'physician' && <Stethoscope className="w-4 h-4" />}
-                          {p.id === 'hospital_pv' && <Building2 className="w-4 h-4" />}
-                          {p.id === 'amc' && <MapPin className="w-4 h-4" />}
-                          {p.id === 'regulator' && <Building className="w-4 h-4" />}
-                          {p.id === 'researcher' && <BarChart2 className="w-4 h-4" />}
+                          <img
+                            src={p.avatar}
+                            alt={p.name}
+                            referrerPolicy="no-referrer"
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80';
+                            }}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
 
                         <div className="min-w-0 flex-1">

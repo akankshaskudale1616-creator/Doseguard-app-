@@ -27,6 +27,12 @@ import { HealthRecordsVitalsView } from './HealthRecordsVitalsView';
 import { VisualAdrMapping } from '../adr/VisualAdrMapping';
 import { MedicationHistoryView } from '../history/MedicationHistoryView';
 import {
+  seniorPatientImg,
+  medicineBlisterPackImg,
+  prescriptionSampleImg,
+  PATIENT_FALLBACK_AVATAR,
+} from '../../assets/images';
+import {
   Plus,
   Mic,
   Camera,
@@ -636,9 +642,12 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
         <div className="bg-gradient-to-r from-sky-50 via-blue-50/70 to-sky-100/60 border-b border-sky-200 text-slate-900 px-5 py-3.5 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
             <img
-              src="/src/assets/images/senior_patient_1791221318901.jpg"
+              src={seniorPatientImg}
               alt="Ramesh V. Kulkarni"
               referrerPolicy="no-referrer"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = PATIENT_FALLBACK_AVATAR;
+              }}
               className="w-11 h-11 rounded-full object-cover border-2 border-sky-300 shadow-xs"
             />
             <div>
@@ -1203,7 +1212,7 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                     <div className="space-y-3 pt-2">
                       <div className="relative rounded-xl overflow-hidden border border-indigo-200 bg-slate-100 max-h-48">
                         <img
-                          src="/src/assets/images/prescription_sample_1791221283671.jpg"
+                          src={prescriptionSampleImg}
                           alt="Doctor prescription"
                           referrerPolicy="no-referrer"
                           className="w-full h-44 object-cover"
@@ -1262,7 +1271,7 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                     <div className="space-y-3 pt-2">
                       <div className="rounded-xl overflow-hidden border border-indigo-200 bg-slate-100 max-h-48">
                         <img
-                          src="/src/assets/images/medicine_blister_pack_1791221295842.jpg"
+                          src={medicineBlisterPackImg}
                           alt="Medicine blister pack"
                           referrerPolicy="no-referrer"
                           className="w-full h-44 object-cover"
@@ -1497,7 +1506,7 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                                   type="button"
                                   onClick={() =>
                                     handleApplySamplePhoto(
-                                      '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+                                      medicineBlisterPackImg,
                                       'augmentin_strip.jpg',
                                       'AX26-904'
                                     )
@@ -1510,7 +1519,7 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                                   type="button"
                                   onClick={() =>
                                     handleApplySamplePhoto(
-                                      '/src/assets/images/prescription_sample_1791221283671.jpg',
+                                      prescriptionSampleImg,
                                       'rx_slip.jpg',
                                       'RX-2026'
                                     )
@@ -1759,7 +1768,7 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                       fileName: `${med.brandName.toLowerCase().replace(/[^a-z0-9]/g, '_')}_label.jpg`,
                       fileSize: '380 KB',
                       mimeType: 'image/jpeg',
-                      dataUrl: med.labelPhoto || '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+                      dataUrl: med.labelPhoto || medicineBlisterPackImg,
                       capturedAt: '2026-10-01 10:24 AM',
                       source: 'camera' as const,
                       batchNumber: med.batchNumber || 'AX26-904',

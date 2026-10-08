@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
+  medicineBlisterPackImg,
+  prescriptionSampleImg,
+} from '../../assets/images';
+import {
   Camera,
   X,
   RotateCcw,
@@ -207,7 +211,7 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
                   <button
                     onClick={() =>
                       handleUseSample(
-                        '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+                        medicineBlisterPackImg,
                         'augmentin_blister.jpg'
                       )
                     }
@@ -290,7 +294,7 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
                 <button
                   onClick={() =>
                     handleUseSample(
-                      '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+                      medicineBlisterPackImg,
                       'augmentin_strip.jpg'
                     )
                   }
@@ -301,7 +305,7 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
                 <button
                   onClick={() =>
                     handleUseSample(
-                      '/src/assets/images/prescription_sample_1791221283671.jpg',
+                      prescriptionSampleImg,
                       'rx_label.jpg'
                     )
                   }

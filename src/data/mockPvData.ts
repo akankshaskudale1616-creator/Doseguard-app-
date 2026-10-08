@@ -1,4 +1,9 @@
 import { Medicine, SymptomReport, SignalMetric, UserGroupProfile, MedicationReminder } from '../types/pv';
+import {
+  medicineBlisterPackImg,
+  seniorPatientImg,
+  clinicalPharmacistImg,
+} from '../assets/images';
 
 export const INITIAL_MEDICINES: Medicine[] = [
   {
@@ -18,13 +23,13 @@ export const INITIAL_MEDICINES: Medicine[] = [
     verifiedByPharmacist: true,
     ocrConfidence: 0.94,
     isSuspected: true,
-    labelPhoto: '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+    labelPhoto: medicineBlisterPackImg,
     attachment: {
       id: 'att-01',
       fileName: 'augmentin_625_label_scan.jpg',
       fileSize: '418 KB',
       mimeType: 'image/jpeg',
-      dataUrl: '/src/assets/images/medicine_blister_pack_1791221295842.jpg',
+      dataUrl: medicineBlisterPackImg,
       capturedAt: '2026-10-01 10:24 AM',
       source: 'camera',
       batchNumber: 'AX26-904',
@@ -446,7 +451,7 @@ export const USER_GROUP_PROFILES: UserGroupProfile[] = [
     userName: 'Ramesh V. Kulkarni',
     accessCategory: 'Core End-User',
     primaryRole: 'Record medicines, symptoms, photos, voice reports',
-    avatar: '/src/assets/images/senior_patient_1791221318901.jpg',
+    avatar: seniorPatientImg,
     badgeColor: 'bg-orange-100 text-orange-800 border-orange-200',
     institution: 'Home Patient (Caregiver: Rohan Kulkarni)',
     permissions: [
@@ -482,7 +487,7 @@ export const USER_GROUP_PROFILES: UserGroupProfile[] = [
     userName: 'Rajesh Varma, M.Pharm',
     accessCategory: 'Clinical Reviewer',
     primaryRole: 'Verify reports, assess completeness, counsel, escalate high-risk cases',
-    avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=256&q=80',
+    avatar: clinicalPharmacistImg,
     badgeColor: 'bg-orange-100 text-orange-800 border-orange-200',
     institution: 'Apex Community Pharmacy, Pune (PvPI Network Node)',
     permissions: [
