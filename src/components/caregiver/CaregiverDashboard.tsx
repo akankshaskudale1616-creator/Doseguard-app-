@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Medicine, SymptomReport } from '../../types/pv';
-import { seniorPatientImg, PATIENT_FALLBACK_AVATAR } from '../../assets/images';
+import { ProfileAvatar } from '../common/ProfileAvatar';
 import {
   HeartHandshake,
   User,
@@ -48,7 +48,7 @@ export const CaregiverDashboard: React.FC<CaregiverDashboardProps> = ({
       id: 'ramesh',
       name: 'Ramesh V. Kulkarni',
       relationship: 'Father (Elderly, 68 yrs)',
-      avatar: seniorPatientImg,
+      initials: 'RK',
       conditions: 'Hypertension, Type-2 Diabetes, LRTI',
       medCount: 6,
       status: 'Active ADR Under Review (Augmentin 625)',
@@ -58,7 +58,7 @@ export const CaregiverDashboard: React.FC<CaregiverDashboardProps> = ({
       id: 'aarav',
       name: 'Aarav Kulkarni',
       relationship: 'Son (Paediatric, 5 yrs)',
-      avatar: 'https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&w=256&q=80',
+      initials: 'AK',
       conditions: 'Childhood Wheezing / Bronchitis',
       medCount: 2,
       status: 'Stable (Salbutamol Inhaler & Syrups)',
@@ -68,7 +68,7 @@ export const CaregiverDashboard: React.FC<CaregiverDashboardProps> = ({
       id: 'shanti',
       name: 'Shanti Devi',
       relationship: 'Mother-in-law (Elderly, 74 yrs)',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80',
+      initials: 'SD',
       conditions: 'Osteoarthritis, Chronic Renal Stage 2',
       medCount: 4,
       status: 'Scheduled BP Check Today',
@@ -192,14 +192,13 @@ export const CaregiverDashboard: React.FC<CaregiverDashboardProps> = ({
                   : 'border-slate-200 hover:border-orange-300 bg-white'
               }`}
             >
-              <img
-                src={dep.avatar}
-                alt={dep.name}
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = PATIENT_FALLBACK_AVATAR;
-                }}
-                className="w-11 h-11 rounded-full object-cover border-2 border-orange-200 shrink-0"
+              <ProfileAvatar
+                role="patient"
+                name={dep.name}
+                initials={dep.initials}
+                size="lg"
+                showBadge={dep.urgent}
+                className="shrink-0"
               />
               <div className="min-w-0 text-xs">
                 <div className="flex items-center gap-1.5">

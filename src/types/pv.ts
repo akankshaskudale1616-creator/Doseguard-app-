@@ -456,3 +456,67 @@ export interface MedicationHistoryRecord {
   prescribedDate: string;
 }
 
+export interface NearbyPharmacyShop {
+  id: string;
+  name: string;
+  address: string;
+  distanceKm: number;
+  rating: number;
+  reviewsCount: number;
+  deliveryTimeEstimate: string;
+  phone: string;
+  openNow: boolean;
+  coldChainReady: boolean;
+  discountOffer?: string;
+  badge?: string;
+}
+
+export interface HomeDeliveryOrder {
+  id: string;
+  patientId: string;
+  patientName: string;
+  orderDate: string;
+  orderTime: string;
+  pharmacyType: 'nearby' | 'custom';
+  pharmacyName: string;
+  pharmacyAddress: string;
+  pharmacyPhone: string;
+  pharmacistLicense?: string;
+  deliveryAddress: string;
+  contactPerson: string;
+  contactPhone: string;
+  medicines: Array<{
+    id: string;
+    brandName: string;
+    genericName: string;
+    strength: string;
+    quantityCourse: string;
+    unitPrice: number;
+  }>;
+  deliverySpeed: 'Express (30-45 mins)' | 'Standard Same-Day' | 'Scheduled Evening Slot';
+  paymentMode: 'Cash on Delivery (COD)' | 'UPI / QR Scan' | 'Senior Citizen Healthcare Card';
+  totalAmount: number;
+  seniorDiscountApplied: number;
+  netPayable: number;
+  status: 'Order Placed' | 'Prescription Verified' | 'Dispensing & Cold-Chain Packed' | 'Out for Delivery' | 'Delivered';
+  riderName: string;
+  riderPhone: string;
+  riderVehicle: string;
+  riderRating: number;
+  riderAvatar?: string;
+  estimatedDeliveryTime: string;
+  deliveryOtp: string;
+  currentStepIndex: number;
+  distanceRemainingKm?: number;
+  coldChainTempC?: number;
+  specialInstructions?: string;
+  prescriptionRefId: string;
+  timeline: Array<{
+    title: string;
+    time: string;
+    description: string;
+    completed: boolean;
+  }>;
+}
+
+

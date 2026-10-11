@@ -26,11 +26,10 @@ import { PhysicianPharmacyContactView } from './PhysicianPharmacyContactView';
 import { HealthRecordsVitalsView } from './HealthRecordsVitalsView';
 import { VisualAdrMapping } from '../adr/VisualAdrMapping';
 import { MedicationHistoryView } from '../history/MedicationHistoryView';
+import { ProfileAvatar } from '../common/ProfileAvatar';
 import {
-  seniorPatientImg,
   medicineBlisterPackImg,
   prescriptionSampleImg,
-  PATIENT_FALLBACK_AVATAR,
 } from '../../assets/images';
 import {
   Plus,
@@ -69,6 +68,9 @@ import {
   Pill,
   RotateCw,
   Video,
+  ArrowLeft,
+  Truck,
+  ChevronLeft,
 } from 'lucide-react';
 import { EDUCATIONAL_CARDS, INITIAL_REMINDERS } from '../../data/mockPvData';
 
@@ -127,9 +129,75 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
   const [viewMode, setViewMode] = useState<'windows' | 'mobile'>('windows');
 
   // Navigation inside app: 'home' | 'timeline' | 'medicines' | 'prescriptions' | 'adrmap' | 'history' | 'attachments' | 'reminders' | 'contact' | 'vitals' | 'report' | 'result' | 'followup'
-  const [currentScreen, setCurrentScreen] = useState<
-    'home' | 'timeline' | 'medicines' | 'prescriptions' | 'adrmap' | 'history' | 'attachments' | 'reminders' | 'contact' | 'vitals' | 'report' | 'result' | 'followup'
-  >('timeline');
+  type PatientScreen = 
+    | 'home'
+    | 'timeline'
+    | 'medicines'
+    | 'prescriptions'
+    | 'adrmap'
+    | 'history'
+    | 'attachments'
+    | 'reminders'
+    | 'contact'
+    | 'vitals'
+    | 'report'
+    | 'result'
+    | 'followup';
+
+  const [currentScreen, _setCurrentScreen] = useState<PatientScreen>('timeline');
+  const [screenHistory, setScreenHistory] = useState<PatientScreen[]>(['home']);
+
+  // Navigate to screen and maintain history stack
+  const setCurrentScreen = (nextScreen: PatientScreen) => {
+    if (nextScreen !== currentScreen) {
+      setScreenHistory((prev) => [...prev, currentScreen]);
+      _setCurrentScreen(nextScreen);
+    }
+  };
+
+  // Back button handler: returns to previous screen in history or 'home'
+  const handleGoBack = () => {
+    if (screenHistory.length > 0) {
+      const prev = screenHistory[screenHistory.length - 1];
+      setScreenHistory((hist) => hist.slice(0, -1));
+      _setCurrentScreen(prev);
+    } else {
+      _setCurrentScreen('home');
+    }
+  };
+
+  // Human-readable title of screen for navigation and back hints
+  const getScreenTitle = (screen: PatientScreen): string => {
+    switch (screen) {
+      case 'home':
+        return 'Dashboard';
+      case 'timeline':
+        return 'Timeline Grid';
+      case 'prescriptions':
+        return 'Prescriptions & Refills';
+      case 'reminders':
+        return 'Pill Tracker & Reminders';
+      case 'adrmap':
+        return 'Visual ADR Map';
+      case 'history':
+        return 'Medication History';
+      case 'medicines':
+        return 'My Meds';
+      case 'contact':
+        return 'Doctor & Pharmacy Contact';
+      case 'vitals':
+        return 'Health Records & Vitals';
+      case 'attachments':
+        return 'Label Photos';
+      case 'report':
+        return 'Report a Symptom';
+      case 'result':
+      case 'followup':
+        return 'Safety Status';
+      default:
+        return 'Dashboard';
+    }
+  };
 
   // Daily medication reminders state (Notification Center)
   const [reminders, setReminders] = useState<MedicationReminder[]>(INITIAL_REMINDERS);
@@ -580,6 +648,16 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
           <>
             <div className="bg-slate-100/95 text-slate-800 px-4 py-2 border-b border-slate-200 flex items-center justify-between text-xs select-none">
               <div className="flex items-center gap-2">
+                {currentScreen !== 'home' && (
+                  <button
+                    onClick={handleGoBack}
+                    className="px-2 py-0.5 bg-white hover:bg-sky-100 text-sky-900 rounded border border-slate-300 flex items-center gap-1 font-bold text-[11px] transition-colors shadow-2xs mr-1 active:scale-95"
+                    title={`Back to ${screenHistory.length > 0 ? getScreenTitle(screenHistory[screenHistory.length - 1]) : 'Dashboard'}`}
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5 text-sky-700 stroke-[2.5]" />
+                    <span>Back</span>
+                  </button>
+                )}
                 <div className="w-4 h-4 rounded bg-sky-600 flex items-center justify-center text-white text-[10px] font-bold">
                   D
                 </div>
@@ -627,6 +705,16 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
 
             <div className="bg-slate-100 text-slate-700 px-5 py-2 flex items-center justify-between border-b border-slate-200 text-xs">
               <div className="flex items-center gap-2">
+                {currentScreen !== 'home' && (
+                  <button
+                    onClick={handleGoBack}
+                    className="px-2 py-0.5 bg-white hover:bg-sky-100 text-sky-900 rounded border border-slate-300 flex items-center gap-1 font-bold text-[10px] transition-colors shadow-2xs mr-1 active:scale-95"
+                    title={`Back to ${screenHistory.length > 0 ? getScreenTitle(screenHistory[screenHistory.length - 1]) : 'Dashboard'}`}
+                  >
+                    <ArrowLeft className="w-3 h-3 text-sky-700 stroke-[2.5]" />
+                    <span>Back</span>
+                  </button>
+                )}
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="font-bold tracking-tight text-slate-900">Dose Guard Mobile</span>
               </div>
@@ -641,14 +729,26 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
         {/* Patient Profile Bar - Light Blue, Soft, High Readability Theme */}
         <div className="bg-gradient-to-r from-sky-50 via-blue-50/70 to-sky-100/60 border-b border-sky-200 text-slate-900 px-5 py-3.5 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
-            <img
-              src={seniorPatientImg}
-              alt="Ramesh V. Kulkarni"
-              referrerPolicy="no-referrer"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = PATIENT_FALLBACK_AVATAR;
-              }}
-              className="w-11 h-11 rounded-full object-cover border-2 border-sky-300 shadow-xs"
+            {/* Left corner Back arrow button when entered into any option */}
+            {currentScreen !== 'home' && (
+              <button
+                onClick={handleGoBack}
+                className="px-3 py-2 bg-white hover:bg-sky-100 text-sky-900 border-2 border-sky-300 hover:border-sky-400 rounded-2xl font-black text-xs flex items-center gap-1.5 shadow-sm transition-all active:scale-95 group shrink-0"
+                title={`Back to ${screenHistory.length > 0 ? getScreenTitle(screenHistory[screenHistory.length - 1]) : 'Dashboard'}`}
+                aria-label="Back to previous option"
+              >
+                <ArrowLeft className="w-4 h-4 text-sky-700 group-hover:-translate-x-1 transition-transform stroke-[2.5]" />
+                <span className="font-extrabold tracking-wide">Back</span>
+              </button>
+            )}
+
+            <ProfileAvatar
+              role="patient"
+              name="Ramesh V. Kulkarni"
+              initials="RK"
+              size="lg"
+              showBadge={true}
+              className="shrink-0"
             />
             <div>
               <div className="flex items-center gap-2">
@@ -715,12 +815,12 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
           </button>
           <button
             onClick={() => setCurrentScreen('prescriptions')}
-            className={`py-1.5 px-3 font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-1 ${
+            className={`py-1.5 px-3 font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-1.5 ${
               currentScreen === 'prescriptions' ? 'bg-sky-600 text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
             }`}
           >
             <Pill className="w-3.5 h-3.5 text-sky-600" />
-            <span>Prescriptions & Refills ({medicines.filter((m) => m.status === 'active').length})</span>
+            <span>Prescriptions, Refills &amp; Delivery ({medicines.filter((m) => m.status === 'active').length})</span>
           </button>
           <button
             onClick={() => setCurrentScreen('reminders')}
@@ -815,12 +915,33 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
 
         {/* Main Screen Content View */}
         <div className="p-5 flex-1 overflow-y-auto">
+          {/* Universal Left Corner Back Navigation Bar if entered any option */}
+          {currentScreen !== 'home' && (
+            <div className="mb-4 flex items-center justify-between bg-gradient-to-r from-sky-50 via-blue-50/70 to-indigo-50/60 border border-sky-200 rounded-2xl px-4 py-2.5 text-xs shadow-xs">
+              <button
+                onClick={handleGoBack}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white hover:bg-sky-100 text-sky-900 border-2 border-sky-300 rounded-xl font-black shadow-xs transition-all active:scale-95 group"
+                title={`Back to ${screenHistory.length > 0 ? getScreenTitle(screenHistory[screenHistory.length - 1]) : 'Dashboard'}`}
+              >
+                <ArrowLeft className="w-4 h-4 text-sky-700 group-hover:-translate-x-1 transition-transform stroke-[2.5]" />
+                <span>← Back to {screenHistory.length > 0 ? getScreenTitle(screenHistory[screenHistory.length - 1]) : 'Dashboard'}</span>
+              </button>
+              <div className="flex items-center gap-2 text-slate-500 text-[11px]">
+                <span className="hidden sm:inline">Active Option:</span>
+                <span className="font-extrabold text-slate-900 bg-white border border-sky-200 px-2.5 py-0.5 rounded-lg shadow-2xs">
+                  {getScreenTitle(currentScreen)}
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* ================= SCREEN: PRESCRIPTIONS & REFILLS ================= */}
           {currentScreen === 'prescriptions' && (
             <PrescriptionsRefillsView
               medicines={medicines}
               onRequestRefill={onRequestRefill}
               ePrescriptions={ePrescriptions}
+              onNavigateBack={handleGoBack}
             />
           )}
 
@@ -958,6 +1079,40 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                     <span>View Calendar Grid</span>
                   </button>
                 </div>
+              </div>
+
+              {/* Medicine Home Delivery & Live Tracking Quick Card */}
+              <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-100/70 rounded-2xl p-4 sm:p-5 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-600/20">
+                    <Truck className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-white border border-emerald-300 px-2.5 py-0.5 rounded-full">
+                        Prescription Home Delivery
+                      </span>
+                      <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.2 rounded-full">
+                        1 In Transit (Apollo FC Rd)
+                      </span>
+                    </div>
+                    <h4 className="text-xs font-black text-slate-900 mt-0.5">
+                      Order Medicine Delivery from Nearby or Any Local Chemist Shop
+                    </h4>
+                    <p className="text-[11px] text-slate-600 mt-0.5">
+                      Fast doorstep refill delivery with digital e-Rx verification &amp; real-time GPS courier tracking.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setCurrentScreen('prescriptions')}
+                  className="py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 shadow-xs shrink-0 self-start sm:self-auto active:scale-95"
+                >
+                  <Truck className="w-3.5 h-3.5" />
+                  <span>Order Refill &amp; Track</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
               </div>
 
               {/* Status Alert if recent case exists */}

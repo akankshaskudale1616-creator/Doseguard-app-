@@ -24,6 +24,7 @@ import { UserRole } from '../types/pv';
 import { USER_GROUP_PROFILES } from '../data/mockPvData';
 import { TargetUsersTableModal } from './dashboard/TargetUsersTableModal';
 import { useLanguage } from '../context/LanguageContext';
+import { ProfileAvatar } from './common/ProfileAvatar';
 
 export type AppTab =
   | 'patient'
@@ -84,14 +85,10 @@ export const Header: React.FC<HeaderProps> = ({
               <span>Logged In Role:</span>
             </span>
             <div className="flex items-center gap-1.5 shrink-0">
-              <img
-                src={currentProfile.avatar}
-                alt={currentProfile.userName}
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = 'none';
-                }}
-                className="w-4 h-4 rounded-full object-cover border border-orange-300"
+              <ProfileAvatar
+                role={currentProfile.id}
+                name={currentProfile.userName}
+                size="xs"
               />
               <span className="font-bold text-slate-900">
                 {currentProfile.userName}
@@ -221,21 +218,13 @@ export const Header: React.FC<HeaderProps> = ({
                             : 'hover:bg-orange-50/70 text-slate-800'
                         }`}
                       >
-                        <div
-                          className={`w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border ${
-                            isSelected ? 'border-white shadow-xs' : 'border-orange-200'
-                          }`}
-                        >
-                          <img
-                            src={p.avatar}
-                            alt={p.name}
-                            referrerPolicy="no-referrer"
-                            onError={(e) => {
-                              (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80';
-                            }}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+                        <ProfileAvatar
+                          role={p.id}
+                          name={p.userName}
+                          size="sm"
+                          shape="rounded"
+                          className="shrink-0 mt-0.5"
+                        />
 
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between">

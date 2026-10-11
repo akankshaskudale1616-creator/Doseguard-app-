@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { UserRole, UserGroupProfile } from '../../types/pv';
 import { USER_GROUP_PROFILES } from '../../data/mockPvData';
+import { ProfileAvatar } from '../common/ProfileAvatar';
 import {
   Users,
   ShieldCheck,
@@ -83,14 +84,10 @@ export const TargetUsersTableModal: React.FC<TargetUsersTableModalProps> = ({
         {/* Current Active User Banner */}
         <div className="bg-orange-50/60 px-6 py-3 border-b border-orange-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-3">
-            <img
-              src={activeUserSpec.avatar}
-              alt={activeUserSpec.userName}
-              referrerPolicy="no-referrer"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80';
-              }}
-              className="w-8 h-8 rounded-full object-cover border border-orange-300 shadow-xs"
+            <ProfileAvatar
+              role={activeUserSpec.id}
+              name={activeUserSpec.userName}
+              size="sm"
             />
             <div>
               <div className="flex items-center gap-1.5">
@@ -186,14 +183,12 @@ export const TargetUsersTableModal: React.FC<TargetUsersTableModalProps> = ({
                         {/* User Group Name with Badge */}
                         <td className="py-3.5 px-4 align-top">
                           <div className="flex items-start gap-2.5">
-                            <img
-                              src={user.avatar}
-                              alt={user.name}
-                              referrerPolicy="no-referrer"
-                              onError={(e) => {
-                                (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80';
-                              }}
-                              className="w-8 h-8 rounded-xl object-cover border border-slate-200 shrink-0 mt-0.5"
+                            <ProfileAvatar
+                              role={user.id}
+                              name={user.userName}
+                              size="sm"
+                              shape="rounded"
+                              className="shrink-0 mt-0.5"
                             />
                             <div>
                               <span className="font-bold text-slate-900 block text-xs">{user.name}</span>
@@ -293,14 +288,10 @@ export const TargetUsersTableModal: React.FC<TargetUsersTableModalProps> = ({
                       >
                         <td className="py-3 px-3 font-bold text-slate-900 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <img
-                              src={u.avatar}
-                              alt={u.name}
-                              referrerPolicy="no-referrer"
-                              onError={(e) => {
-                                (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80';
-                              }}
-                              className="w-6 h-6 rounded-full object-cover border border-slate-200"
+                            <ProfileAvatar
+                              role={u.id}
+                              name={u.userName}
+                              size="xs"
                             />
                             <span>{u.name}</span>
                           </div>
