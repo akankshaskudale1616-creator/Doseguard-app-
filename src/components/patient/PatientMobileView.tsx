@@ -26,6 +26,10 @@ import { PhysicianPharmacyContactView } from './PhysicianPharmacyContactView';
 import { HealthRecordsVitalsView } from './HealthRecordsVitalsView';
 import { VisualAdrMapping } from '../adr/VisualAdrMapping';
 import { MedicationHistoryView } from '../history/MedicationHistoryView';
+import { PvpiComplianceChecklist } from '../compliance/PvpiComplianceChecklist';
+import { TemporalTriageVisualizer } from '../triage/TemporalTriageVisualizer';
+import { AmcLocator } from '../maps/AmcLocator';
+import { QrCodeScannerView } from '../scanner/QrCodeScannerView';
 import { ProfileAvatar } from '../common/ProfileAvatar';
 import {
   medicineBlisterPackImg,
@@ -71,6 +75,9 @@ import {
   ArrowLeft,
   Truck,
   ChevronLeft,
+  ClipboardCheck,
+  MapPin,
+  Building2,
 } from 'lucide-react';
 import { EDUCATIONAL_CARDS, INITIAL_REMINDERS } from '../../data/mockPvData';
 
@@ -142,7 +149,11 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
     | 'vitals'
     | 'report'
     | 'result'
-    | 'followup';
+    | 'followup'
+    | 'pvpi_checklist'
+    | 'temporal_triage'
+    | 'amc_locator'
+    | 'qr_scanner';
 
   const [currentScreen, _setCurrentScreen] = useState<PatientScreen>('timeline');
   const [screenHistory, setScreenHistory] = useState<PatientScreen[]>(['home']);
@@ -194,6 +205,14 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
       case 'result':
       case 'followup':
         return 'Safety Status';
+      case 'pvpi_checklist':
+        return 'PvPI Compliance Checklist';
+      case 'temporal_triage':
+        return 'Temporal Triage Visualizer';
+      case 'amc_locator':
+        return 'AMC & Hospital Locator';
+      case 'qr_scanner':
+        return 'Rx & Drug QR Scanner';
       default:
         return 'Dashboard';
     }
@@ -911,6 +930,50 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
           >
             Safety Status
           </button>
+          <button
+            onClick={() => setCurrentScreen('amc_locator')}
+            className={`py-1.5 px-3 font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              currentScreen === 'amc_locator'
+                ? 'bg-orange-600 text-white shadow-xs font-bold'
+                : 'text-orange-800 bg-orange-50 hover:bg-orange-100/80 font-bold border border-orange-200'
+            }`}
+          >
+            <MapPin className="w-3.5 h-3.5 text-orange-600" />
+            <span>AMC Hospitals & Centers</span>
+          </button>
+          <button
+            onClick={() => setCurrentScreen('pvpi_checklist')}
+            className={`py-1.5 px-3 font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              currentScreen === 'pvpi_checklist'
+                ? 'bg-emerald-600 text-white shadow-xs font-bold'
+                : 'text-emerald-800 bg-emerald-50 hover:bg-emerald-100/80 font-bold border border-emerald-200'
+            }`}
+          >
+            <ClipboardCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>PvPI Compliance Checklist</span>
+          </button>
+          <button
+            onClick={() => setCurrentScreen('temporal_triage')}
+            className={`py-1.5 px-3 font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              currentScreen === 'temporal_triage'
+                ? 'bg-indigo-600 text-white shadow-xs font-bold'
+                : 'text-indigo-800 bg-indigo-50 hover:bg-indigo-100/80 font-bold border border-indigo-200'
+            }`}
+          >
+            <Clock className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Temporal Triage Visualizer</span>
+          </button>
+          <button
+            onClick={() => setCurrentScreen('qr_scanner')}
+            className={`py-1.5 px-3 font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              currentScreen === 'qr_scanner'
+                ? 'bg-amber-600 text-white shadow-xs font-bold'
+                : 'text-amber-800 bg-amber-50 hover:bg-amber-100/80 font-bold border border-amber-200'
+            }`}
+          >
+            <QrCode className="w-3.5 h-3.5 text-amber-600" />
+            <span>Rx & Drug QR Scanner</span>
+          </button>
         </div>
 
         {/* Main Screen Content View */}
@@ -1113,6 +1176,128 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                   <span>Order Refill &amp; Track</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
+              </div>
+
+              {/* ================= CLINICAL TRIAGE, COMPLIANCE & AMC CENTERS GRID ================= */}
+              <div className="bg-gradient-to-br from-slate-50 via-white to-orange-50/40 rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-3.5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-orange-700 bg-orange-100/80 px-2 py-0.5 rounded-full border border-orange-200 inline-block mb-1">
+                      PvPI Digital Clinical Suite
+                    </span>
+                    <h4 className="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-orange-600" />
+                      <span>PvPI Compliance, Temporal Triage &amp; AMC Hospitals According to Centers</span>
+                    </h4>
+                  </div>
+                  <span className="text-[11px] text-slate-500 font-medium">4 Specialized Clinical Modules</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {/* Card 1: AMC Locator (All Hospitals According to Centers) */}
+                  <div className="p-3.5 bg-white hover:bg-orange-50/30 rounded-2xl border-2 border-orange-200/80 hover:border-orange-400 transition-all shadow-xs flex flex-col justify-between space-y-2.5 group">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center shadow-xs">
+                          <MapPin className="w-4 h-4 text-orange-600" />
+                        </div>
+                        <span className="text-[10px] font-mono font-bold bg-orange-100 text-orange-900 px-2 py-0.5 rounded-full">
+                          All India Centers
+                        </span>
+                      </div>
+                      <h5 className="text-xs font-black text-slate-900 mt-2">AMC Locator: All Hospitals</h5>
+                      <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                        Find recognized PvPI monitoring centres, apex AIIMS institutes, and 24/7 casualty departments organized according to geographical centers.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setCurrentScreen('amc_locator')}
+                      className="w-full py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95"
+                    >
+                      <MapPin className="w-3.5 h-3.5" />
+                      <span>Locate AMC Hospitals</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Card 2: PvPI Compliance Checklist */}
+                  <div className="p-3.5 bg-white hover:bg-emerald-50/30 rounded-2xl border-2 border-emerald-200/80 hover:border-emerald-400 transition-all shadow-xs flex flex-col justify-between space-y-2.5 group">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shadow-xs">
+                          <ClipboardCheck className="w-4 h-4 text-emerald-600" />
+                        </div>
+                        <span className="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full">
+                          100% Audit Ready
+                        </span>
+                      </div>
+                      <h5 className="text-xs font-black text-slate-900 mt-2">PvPI Compliance Checklist</h5>
+                      <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                        Verify Core-4 criteria, serious 15-day expedited submission rules, positive dechallenge proof, and CDSCO/PvPI compliance.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setCurrentScreen('pvpi_checklist')}
+                      className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95"
+                    >
+                      <ClipboardCheck className="w-3.5 h-3.5" />
+                      <span>Open PvPI Checklist</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Card 3: Temporal Triage Visualizer */}
+                  <div className="p-3.5 bg-white hover:bg-indigo-50/30 rounded-2xl border-2 border-indigo-200/80 hover:border-indigo-400 transition-all shadow-xs flex flex-col justify-between space-y-2.5 group">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shadow-xs">
+                          <Clock className="w-4 h-4 text-indigo-600" />
+                        </div>
+                        <span className="text-[10px] font-mono font-bold bg-indigo-100 text-indigo-900 px-2 py-0.5 rounded-full">
+                          Interactive Latency
+                        </span>
+                      </div>
+                      <h5 className="text-xs font-black text-slate-900 mt-2">Temporal Triage Visualizer</h5>
+                      <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                        Interactive multi-drug timeline bar chart, step-by-step latency simulation (78h onset), and dechallenge recovery curves.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setCurrentScreen('temporal_triage')}
+                      className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95"
+                    >
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>Launch Triage Visualizer</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Card 4: Rx & Drug QR Scanner */}
+                  <div className="p-3.5 bg-white hover:bg-amber-50/30 rounded-2xl border-2 border-amber-200/80 hover:border-amber-400 transition-all shadow-xs flex flex-col justify-between space-y-2.5 group">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs">
+                          <QrCode className="w-4 h-4 text-amber-600" />
+                        </div>
+                        <span className="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">
+                          GS1 2D / e-Rx
+                        </span>
+                      </div>
+                      <h5 className="text-xs font-black text-slate-900 mt-2">Rx &amp; Drug QR Scanner</h5>
+                      <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                        Scan medicine blister packs, CDSCO DataMatrix barcodes, or ABDM digital e-prescriptions with live camera, image upload, or preset samples.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setCurrentScreen('qr_scanner')}
+                      className="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95"
+                    >
+                      <QrCode className="w-3.5 h-3.5" />
+                      <span>Launch QR Scanner</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Status Alert if recent case exists */}
@@ -1435,12 +1620,24 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                       <p className="text-xs text-slate-600">
                         Camera detected GS1 2D DataMatrix barcode: Batch <code>AX26-904</code>, Exp: <code>08/2027</code>.
                       </p>
-                      <button
-                        onClick={handleSimulateScan}
-                        className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs"
-                      >
-                        Extract Package Details
-                      </button>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <button
+                          onClick={handleSimulateScan}
+                          className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs"
+                        >
+                          Extract Package Details
+                        </button>
+                        <button
+                          onClick={() => {
+                            setAddMode(null);
+                            setCurrentScreen('qr_scanner');
+                          }}
+                          className="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5"
+                        >
+                          <QrCode className="w-3.5 h-3.5" />
+                          <span>Open Full QR Scanner</span>
+                        </button>
+                      </div>
                     </div>
                   )}
 
@@ -2479,6 +2676,41 @@ export const PatientMobileView: React.FC<PatientMobileViewProps> = ({
                   </button>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* ================= SCREEN 5: PVPI COMPLIANCE CHECKLIST ================= */}
+          {currentScreen === 'pvpi_checklist' && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <PvpiComplianceChecklist
+                activeCase={activeReport}
+              />
+            </div>
+          )}
+
+          {/* ================= SCREEN 6: TEMPORAL TRIAGE VISUALIZER ================= */}
+          {currentScreen === 'temporal_triage' && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <TemporalTriageVisualizer />
+            </div>
+          )}
+
+          {/* ================= SCREEN 7: AMC LOCATOR ALL HOSPITALS ACCORDING TO CENTERS ================= */}
+          {currentScreen === 'amc_locator' && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <AmcLocator />
+            </div>
+          )}
+
+          {/* ================= SCREEN 8: RX & DRUG QR SCANNER ================= */}
+          {currentScreen === 'qr_scanner' && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <QrCodeScannerView
+                onAddScannedMedicine={(med) => onAddMedicine(med)}
+                onNavigateToReport={(medName) => setCurrentScreen('report')}
+                onBack={handleGoBack}
+                existingMedicines={medicines}
+              />
             </div>
           )}
         </div>

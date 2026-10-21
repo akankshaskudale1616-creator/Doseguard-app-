@@ -19,6 +19,9 @@ import {
   Sparkles,
   Check,
   Languages,
+  ClipboardCheck,
+  Clock,
+  QrCode,
 } from 'lucide-react';
 import { UserRole } from '../types/pv';
 import { USER_GROUP_PROFILES } from '../data/mockPvData';
@@ -41,7 +44,10 @@ export type AppTab =
   | 'maps'
   | 'dermatology'
   | 'analytics'
-  | 'architecture';
+  | 'architecture'
+  | 'pvpi_checklist'
+  | 'temporal_triage'
+  | 'qr_scanner';
 
 interface HeaderProps {
   activeTab: AppTab;
@@ -370,6 +376,33 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <MapPin className="w-3 h-3" />
             <span>AMC Locator</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('pvpi_checklist')}
+            className={`px-2.5 py-1 rounded-lg whitespace-nowrap font-medium flex items-center gap-1 ${
+              activeTab === 'pvpi_checklist' ? 'bg-orange-500 text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <ClipboardCheck className="w-3 h-3 text-orange-600" />
+            <span>PvPI Checklist</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('temporal_triage')}
+            className={`px-2.5 py-1 rounded-lg whitespace-nowrap font-medium flex items-center gap-1 ${
+              activeTab === 'temporal_triage' ? 'bg-orange-500 text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Clock className="w-3 h-3 text-orange-600" />
+            <span>Temporal Triage</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('qr_scanner')}
+            className={`px-2.5 py-1 rounded-lg whitespace-nowrap font-medium flex items-center gap-1 ${
+              activeTab === 'qr_scanner' ? 'bg-orange-500 text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <QrCode className="w-3 h-3 text-orange-600" />
+            <span>QR Scanner</span>
           </button>
           <button
             onClick={() => setActiveTab('dermatology')}

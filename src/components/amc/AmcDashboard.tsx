@@ -14,7 +14,12 @@ import {
   Layers,
   ChevronRight,
   Filter,
+  ClipboardCheck,
+  Clock,
 } from 'lucide-react';
+import { PvpiComplianceChecklist } from '../compliance/PvpiComplianceChecklist';
+import { TemporalTriageVisualizer } from '../triage/TemporalTriageVisualizer';
+import { AmcLocator } from '../maps/AmcLocator';
 
 interface AmcDashboardProps {
   cases: SymptomReport[];
@@ -28,7 +33,7 @@ export const AmcDashboard: React.FC<AmcDashboardProps> = ({
   onOpenPvpiModal,
 }) => {
   const [selectedCaseId, setSelectedCaseId] = useState<string>(cases[0]?.id || 'CASE-6801');
-  const [activeAmcTab, setActiveAmcTab] = useState<'intake' | 'meddra' | 'e2br3' | 'consensus'>('intake');
+  const [activeAmcTab, setActiveAmcTab] = useState<'intake' | 'meddra' | 'e2br3' | 'consensus' | 'checklist' | 'temporal' | 'directory'>('intake');
   const [transmissionSuccess, setTransmissionSuccess] = useState(false);
 
   const selectedCase = cases.find((c) => c.id === selectedCaseId) || cases[0];
@@ -119,6 +124,39 @@ export const AmcDashboard: React.FC<AmcDashboardProps> = ({
           }`}
         >
           4. AMC Causality Consensus Panel
+        </button>
+        <button
+          onClick={() => setActiveAmcTab('checklist')}
+          className={`px-3.5 py-2 rounded-xl font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+            activeAmcTab === 'checklist'
+              ? 'bg-orange-500 text-white shadow-xs'
+              : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <ClipboardCheck className="w-3.5 h-3.5" />
+          <span>5. PvPI Statutory Compliance Checklist</span>
+        </button>
+        <button
+          onClick={() => setActiveAmcTab('temporal')}
+          className={`px-3.5 py-2 rounded-xl font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+            activeAmcTab === 'temporal'
+              ? 'bg-orange-500 text-white shadow-xs'
+              : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Clock className="w-3.5 h-3.5" />
+          <span>6. Temporal Triage Visualizer</span>
+        </button>
+        <button
+          onClick={() => setActiveAmcTab('directory')}
+          className={`px-3.5 py-2 rounded-xl font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+            activeAmcTab === 'directory'
+              ? 'bg-orange-500 text-white shadow-xs'
+              : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <MapPin className="w-3.5 h-3.5" />
+          <span>7. All India AMC Hospital Directory</span>
         </button>
       </div>
 

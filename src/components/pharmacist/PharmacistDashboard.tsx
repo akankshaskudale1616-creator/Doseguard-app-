@@ -36,6 +36,8 @@ import {
   MessageSquare,
   Activity,
   ClipboardList,
+  ClipboardCheck,
+  MapPin,
 } from 'lucide-react';
 import { PrescriptionQueueFulfillment } from './PrescriptionQueueFulfillment';
 import { InventoryDrugManagement } from './InventoryDrugManagement';
@@ -44,6 +46,9 @@ import { PatientConsultationLogs } from './PatientConsultationLogs';
 import { VisualAdrMapping } from '../adr/VisualAdrMapping';
 import { MedicationHistoryView } from '../history/MedicationHistoryView';
 import { ProfileAvatar } from '../common/ProfileAvatar';
+import { PvpiComplianceChecklist } from '../compliance/PvpiComplianceChecklist';
+import { TemporalTriageVisualizer } from '../triage/TemporalTriageVisualizer';
+import { AmcLocator } from '../maps/AmcLocator';
 
 interface PharmacistDashboardProps {
   cases?: SymptomReport[];
@@ -101,7 +106,7 @@ export const PharmacistDashboard: React.FC<PharmacistDashboardProps> = ({
   onReconcileMedication = () => {},
 }) => {
   const [pharmacistTab, setPharmacistTab] = useState<
-    'queue' | 'inventory' | 'calculators' | 'consultations' | 'adrmap' | 'history' | 'pvpi'
+    'queue' | 'inventory' | 'calculators' | 'consultations' | 'adrmap' | 'history' | 'pvpi' | 'checklist' | 'temporal' | 'amc'
   >('queue');
   const [filterPriority, setFilterPriority] = useState<string>('all');
   const activeCase = selectedCase || cases[0];
@@ -278,7 +283,43 @@ export const PharmacistDashboard: React.FC<PharmacistDashboardProps> = ({
           }`}
         >
           <ShieldAlert className="w-3.5 h-3.5" />
-          <span>Suspected ADR Triage & PvPI</span>
+          <span>Suspected ADR Triage &amp; PvPI</span>
+        </button>
+
+        <button
+          onClick={() => setPharmacistTab('checklist')}
+          className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 whitespace-nowrap ${
+            pharmacistTab === 'checklist'
+              ? 'bg-orange-500 text-white shadow-xs font-bold'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <ClipboardCheck className="w-3.5 h-3.5 text-orange-600" />
+          <span>PvPI Checklist</span>
+        </button>
+
+        <button
+          onClick={() => setPharmacistTab('temporal')}
+          className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 whitespace-nowrap ${
+            pharmacistTab === 'temporal'
+              ? 'bg-orange-500 text-white shadow-xs font-bold'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <Clock className="w-3.5 h-3.5 text-orange-600" />
+          <span>Temporal Triage</span>
+        </button>
+
+        <button
+          onClick={() => setPharmacistTab('amc')}
+          className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 whitespace-nowrap ${
+            pharmacistTab === 'amc'
+              ? 'bg-orange-500 text-white shadow-xs font-bold'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <MapPin className="w-3.5 h-3.5 text-orange-600" />
+          <span>AMC Hospital Centers</span>
         </button>
       </div>
 
@@ -810,6 +851,20 @@ export const PharmacistDashboard: React.FC<PharmacistDashboardProps> = ({
         </div>
       </div>
       )}
+
+      {/* 8. PVPI COMPLIANCE CHECKLIST TAB */}
+      {pharmacistTab === 'checklist' && (
+        <PvpiComplianceChecklist
+          activeCase={activeCase}
+          onOpenPvpiExport={() => onOpenPvpiModal && onOpenPvpiModal(activeCase)}
+        />
+      )}
+
+      {/* 9. TEMPORAL TRIAGE VISUALIZER TAB */}
+      {pharmacistTab === 'temporal' && <TemporalTriageVisualizer />}
+
+      {/* 10. ALL AMC HOSPITAL CENTERS TAB */}
+      {pharmacistTab === 'amc' && <AmcLocator />}
     </div>
   );
 };

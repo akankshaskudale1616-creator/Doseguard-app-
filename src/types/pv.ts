@@ -23,6 +23,7 @@ export interface Medicine {
   prescriber: string;
   indication: string;
   batchNumber?: string;
+  expiryDate?: string;
   source: 'ocr' | 'barcode' | 'manual';
   verifiedByPharmacist: boolean;
   ocrConfidence?: number;

@@ -24,6 +24,9 @@ import { LanguageSection } from './components/language/LanguageSection';
 import { LanguageProvider } from './context/LanguageContext';
 import { EmergencyModal } from './components/EmergencyModal';
 import { PvpiExportModal } from './components/pharmacist/PvpiExportModal';
+import { PvpiComplianceChecklist } from './components/compliance/PvpiComplianceChecklist';
+import { TemporalTriageVisualizer } from './components/triage/TemporalTriageVisualizer';
+import { QrCodeScannerView } from './components/scanner/QrCodeScannerView';
 import { Medicine, SymptomReport, UserRole, ElectronicPrescription, DispenseStatus, DrugInventoryItem, RefillRequest, PharmacistConsultationLog, TelehealthAppointment, ConsultationSoapNote, DirectChatMessage, VitalSignEntry, PatientLabResult, PatientDocumentedAllergy, VisualAdrEvent, MedicationHistoryRecord } from './types/pv';
 import { INITIAL_MEDICINES, INITIAL_CASES } from './data/mockPvData';
 import {
@@ -413,6 +416,25 @@ export default function App() {
           {activeTab === 'search' && <SearchGroundingPortal />}
 
           {activeTab === 'maps' && <AmcLocator />}
+
+          {activeTab === 'pvpi_checklist' && (
+            <PvpiComplianceChecklist
+              activeCase={selectedCase}
+              onOpenPvpiExport={() => handleOpenPvpiModal(selectedCase)}
+            />
+          )}
+
+          {activeTab === 'temporal_triage' && <TemporalTriageVisualizer />}
+
+          {activeTab === 'qr_scanner' && (
+            <QrCodeScannerView
+              onAddScannedMedicine={(med) => handleAddMedicine(med)}
+              onNavigateToReport={(medName) => {
+                setActiveTab('patient');
+              }}
+              existingMedicines={medicines}
+            />
+          )}
 
           {activeTab === 'dermatology' && <DermatologyComparator />}
 
